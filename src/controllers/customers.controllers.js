@@ -15,7 +15,10 @@ export async function searchCustomers (req,res){
 	const { id } = req.params;
 
     try{
-		const customer = await db.query(`SELECT * FROM customers WHERE id = ${id};`);
+		const customer = await db.query(
+			`SELECT * FROM customers WHERE id = $1;`,
+			[id]
+		);
 
 		res.send(customer.rows[0])
 	} catch (err) {
@@ -24,8 +27,13 @@ export async function searchCustomers (req,res){
 }
 
 export async function insertCustomers (req,res){
+	const {name, phone, cpf, birthday} = req.body
+
     try{
-		res.send("insert")
+		const customer = await db.query(
+			`INSERT INTO customers (name, phone, cpf, birthday) VALUES ('${name}', '${phone}', '${cpf}', '${birthday}');`)
+		res.send(customer)
+   
 	} catch (err) {
 		res.status(500).send(err.message)
 	}
