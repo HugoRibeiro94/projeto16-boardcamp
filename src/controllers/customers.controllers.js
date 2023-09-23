@@ -30,9 +30,12 @@ export async function insertCustomers (req,res){
 	const {name, phone, cpf, birthday} = req.body
 
     try{
-		const customer = await db.query(
+		const customer = await db.query(`SELECT * FROM customers WHERE cpf = ${cpf}`)
+		if(customer) return res.status(409).send("CPF já cadastrado")
+
+		const newCustomer = await db.query(
 			`INSERT INTO customers (name, phone, cpf, birthday) VALUES ('${name}', '${phone}', '${cpf}', '${birthday}');`)
-		res.send(customer)
+		res.send(newCustomer)
    
 	} catch (err) {
 		res.status(500).send(err.message)
