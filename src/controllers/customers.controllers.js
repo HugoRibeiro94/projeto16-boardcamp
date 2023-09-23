@@ -2,15 +2,22 @@ import db from "../database/database.connection.js";
 
 export async function listCustomers (req,res){
     try{
-		res.send("list")
+		const customers = await db.query(`SELECT * FROM customers;`)
+
+		res.send(customers.rows)
+
 	} catch (err) {
 		res.status(500).send(err.message)
 	}
 }
 
 export async function searchCustomers (req,res){
+	const { id } = req.params;
+
     try{
-		res.send("search")
+		const customer = await db.query(`SELECT * FROM customers WHERE id = ${id};`);
+
+		res.send(customer.rows[0])
 	} catch (err) {
 		res.status(500).send(err.message)
 	}
