@@ -9,22 +9,22 @@ export async function listRentals (req,res){
 			JOIN customers ON "customerId" = customers.id
 			JOIN games ON "gameId" = games.id;`
 		)
-		
+		console.log(rentals.rows);
 		function adicionaZero(numero){
 			if (numero <= 9) 
 				return "0" + numero;
 			else
 				return numero; 
 		}
-		
+
 		const dateCustomers = rentals.rows.map(item => item.rentDate = (item.rentDate.getFullYear() + "-" + (adicionaZero(item.rentDate.getMonth() + 1).toString()) + "-" + (adicionaZero(item.rentDate.getDate().toString()))))
 
-		const obj = rentals.rows.find( id => id)
+		const obj = rentals.rows.map( r => r)
 		console.log(obj);
 		const customer = obj.name
-		console.log(customer);
+		//console.log(customer);
 		const game = obj.nome
-		console.log(game);
+		//console.log(game);
 
 		const newObj = rentals.rows.find(id=>id)
 		

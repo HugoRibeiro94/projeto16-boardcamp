@@ -14,5 +14,7 @@ app.use(rentalsRouter);
 app.use(customersRouter);
 app.use(gamesRouter);
 
-const PORT = 5000;
-app.listen(PORT, () => console.log(`Running at port ${PORT}`));
+const port = process.env.PORT || 5000
+app.listen(port, () => {
+	console.log(`Servidor rodando na porta ${port}`)
+})
