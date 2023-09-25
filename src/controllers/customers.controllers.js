@@ -27,6 +27,11 @@ export async function searchCustomers (req,res){
 			[id]
 		);
 		
+		const dateFormat = customer.rows[0];
+		dateFormat.birthday = (dateFormat.birthday.getFullYear() + "-" + ((dateFormat.birthday.getMonth() + 1)) + "-" + (dateFormat.birthday.getDate() ))
+		console.log(dateFormat)
+		//console.log(dateCustomers)
+
 		if (customer.rows.length == 0) return res.sendStatus(404)
 		res.send(customer.rows[0])
 	} catch (err) {
