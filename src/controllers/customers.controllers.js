@@ -58,8 +58,8 @@ export async function insertCustomers (req,res){
 
     try{
 		
-		const existCustomer = await db.query(`SELECT * FROM customers WHERE cpf = ${cpf}`)
-		if(existCustomer.rows.length > 0) return res.status(409).send("CPF já cadastrado")
+		//const existCustomer = await db.query(`SELECT * FROM customers WHERE cpf = ${cpf}`)
+		//if(existCustomer.rows.length > 0) return res.status(409).send("CPF já cadastrado")
 		
 		const newCustomer = await db.query(
 			`INSERT INTO customers (name, phone, cpf, birthday) VALUES ('${name}', '${phone}', '${cpf}', '${birthday}');`
