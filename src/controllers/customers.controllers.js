@@ -12,7 +12,7 @@ export async function listCustomers (req,res){
 				return numero; 
 		}
 		const dateCustomers = customers.rows.map(item => item.birthday = (item.birthday.getFullYear() + "-" + (adicionaZero(item.birthday.getMonth() + 1).toString()) + "-" + (adicionaZero(item.birthday.getDate().toString()))))
-		console.log(dateCustomers)
+		//console.log(dateCustomers)
 		//const dataSemTempo = dateCustomers[0]
 		//console.log(dataSemTempo);
 		//let dataFormatada = (dataSemTempo.getFullYear() + "-" + ((dataSemTempo.getMonth() + 1)) + "-" + (dataSemTempo.getDate() )) ; 
@@ -33,9 +33,8 @@ export async function searchCustomers (req,res){
 			`SELECT * FROM customers WHERE id = $1;`,
 			[id]
 		);
-		
+		if (customer.rows.length == 0) return res.sendStatus(404)
 		function adicionaZero(numero){
-			console.log(numero)
 			if (numero <= 9) 
 				return "0" + numero;
 			else
@@ -44,10 +43,10 @@ export async function searchCustomers (req,res){
 
 		const dateFormat = customer.rows[0];
 		dateFormat.birthday = (dateFormat.birthday.getFullYear() + "-" + (adicionaZero(dateFormat.birthday.getMonth() + 1).toString()) + "-" + (adicionaZero(dateFormat.birthday.getDate().toString())))
-		console.log(dateFormat)
+		//console.log(dateFormat)
 		//console.log(dateCustomers)
 
-		if (customer.rows.length == 0) return res.sendStatus(404)
+		
 		res.send(customer.rows[0])
 	} catch (err) {
 		res.status(500).send(err.message)
@@ -78,7 +77,7 @@ export async function updateCustomers (req,res){
 
     try{
 		const customer = await db.query(
-			`UPDATE customers SET name='${name}', phone='${phone}', cpf='${cpf}', birthday=''${birthday.format('YYYY-MM-DD')}'  WHERE id = $1;`,
+			`UPDATE customers SET name='${name}', phone='${phone}', cpf='${cpf}', birthday='${birthday}'  WHERE id = $1;`,
 			[id]
 		);
 
