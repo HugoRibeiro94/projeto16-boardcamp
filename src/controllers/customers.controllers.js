@@ -4,7 +4,14 @@ export async function listCustomers (req,res){
     try{
 		const customers = await db.query(`SELECT * FROM customers;`)
 
-		const dateCustomers = customers.rows.map(item => item.birthday = (item.birthday.getFullYear() + "-" + ((item.birthday.getMonth() + 1)) + "-" + (item.birthday.getDate() )))
+		function adicionaZero(numero){
+			console.log(numero)
+			if (numero <= 9) 
+				return "0" + numero;
+			else
+				return numero; 
+		}
+		const dateCustomers = customers.rows.map(item => item.birthday = (item.birthday.getFullYear() + "-" + (adicionaZero(item.birthday.getMonth() + 1).toString()) + "-" + (adicionaZero(item.birthday.getDate().toString()))))
 		console.log(dateCustomers)
 		//const dataSemTempo = dateCustomers[0]
 		//console.log(dataSemTempo);
@@ -27,8 +34,16 @@ export async function searchCustomers (req,res){
 			[id]
 		);
 		
+		function adicionaZero(numero){
+			console.log(numero)
+			if (numero <= 9) 
+				return "0" + numero;
+			else
+				return numero; 
+		}
+
 		const dateFormat = customer.rows[0];
-		dateFormat.birthday = (dateFormat.birthday.getFullYear() + "-" + ((dateFormat.birthday.getMonth() + 1)) + "-" + (dateFormat.birthday.getDate() ))
+		dateFormat.birthday = (dateFormat.birthday.getFullYear() + "-" + (adicionaZero(dateFormat.birthday.getMonth() + 1).toString()) + "-" + (adicionaZero(dateFormat.birthday.getDate().toString())))
 		console.log(dateFormat)
 		//console.log(dateCustomers)
 
