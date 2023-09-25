@@ -4,6 +4,13 @@ export async function listCustomers (req,res){
     try{
 		const customers = await db.query(`SELECT * FROM customers;`)
 
+		const dateCustomers = customers.rows.map(item => item.birthday = (item.birthday.getFullYear() + "-" + ((item.birthday.getMonth() + 1)) + "-" + (item.birthday.getDate() )))
+		console.log(dateCustomers)
+		//const dataSemTempo = dateCustomers[0]
+		//console.log(dataSemTempo);
+		//let dataFormatada = (dataSemTempo.getFullYear() + "-" + ((dataSemTempo.getMonth() + 1)) + "-" + (dataSemTempo.getDate() )) ; 
+		//console.log(dataFormatada);
+
 		res.send(customers.rows)
 
 	} catch (err) {
@@ -19,7 +26,8 @@ export async function searchCustomers (req,res){
 			`SELECT * FROM customers WHERE id = $1;`,
 			[id]
 		);
-
+		
+		if (customer.rows.length == 0) return res.sendStatus(404)
 		res.send(customer.rows[0])
 	} catch (err) {
 		res.status(500).send(err.message)
@@ -32,7 +40,7 @@ export async function insertCustomers (req,res){
     try{
 		//const customer = await db.query(`SELECT * FROM customers WHERE cpf = ${cpf}`)
 		//if(customer) return res.status(409).send("CPF já cadastrado")
-
+		
 		const newCustomer = await db.query(
 			`INSERT INTO customers (name, phone, cpf, birthday) VALUES ('${name}', '${phone}', '${cpf}', '${birthday}');`
 		)
@@ -50,7 +58,7 @@ export async function updateCustomers (req,res){
 
     try{
 		const customer = await db.query(
-			`UPDATE customers SET name='${name}', phone='${phone}', cpf='${cpf}', birthday=''${birthday}'  WHERE id = $1;`,
+			`UPDATE customers SET name='${name}', phone='${phone}', cpf='${cpf}', birthday=''${birthday.format('YYYY-MM-DD')}'  WHERE id = $1;`,
 			[id]
 		);
 
